@@ -1,0 +1,65 @@
+---
+title: Your First Request
+description: A guide that covers how easy it is to send a GET request from a command line or a file with Cast.
+---
+
+import { Tabs, TabItem } from "@astrojs/starlight/components";
+import { Code } from "@astrojs/starlight/components";
+import { Steps } from "@astrojs/starlight/components";
+
+export const singleUseCode = `cast get https://example.com/api/v1`;
+export const filename = "request.http";
+
+<Tabs>
+  <TabItem label="Single Use">  <Steps>
+1. Run the following command:
+
+    ```bash
+    cast get https://example.com
+    ```
+
+2. Observe the response:
+   ```http
+   200 OK
+   Content-Length: 1256
+   Content-Type: text/html
+   ```
+
+</Steps>
+
+</TabItem>
+
+<TabItem label="Script It">
+<Steps>
+1. Create a new file to store the request:
+
+    ```bash
+    touch request.http
+    ```
+
+2. Open the newly created file with your favorite text editor and add the following HTTP request:
+
+   ```http
+   GET /resources HTTP/1.1
+   Host: example.com
+   Authorization: Bearer example123
+   ```
+
+3. Run the following command using Cast:
+
+   ```bash
+   cast file request.http
+   ```
+
+4. A truncated response and run summary should then be displayed:
+
+   ```
+   test.http: Success
+   ────────────────────
+   # of requests: 1
+   # of failures: 0
+   Duration: 210 ms
+   ```
+
+  </Steps></TabItem>
+</Tabs>
