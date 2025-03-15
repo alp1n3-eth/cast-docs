@@ -1,0 +1,22 @@
+# Chain Multiple Requests Together
+[pre]
+env_token = uuidv7()
+secretPhrase = url.encode("th3$quick brown fox jumped$over the$lazy d0g")
+host_header = "Host: example.com"
+
+# Insert Functions and Persistent Values Into Requests
+[request]
+POST /entry/new HTTP/1.1
+host_header
+Content-Type: application/json
+
+{
+  "entryName": "env_token",
+  "secret": "secretPhrase"
+}
+
+# Create Assertions and Capture Values from the Response
+[post]
+status == "200"
+header != "X-Rate-Limit"
+jwtReply = regex "(^[A-Za-z0-9-_]*\.[A-Za-z0-9-_]*\.[A-Za-z0-9-_]*$)"

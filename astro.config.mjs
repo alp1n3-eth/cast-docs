@@ -7,7 +7,10 @@ import mdx from "@astrojs/mdx";
 export default defineConfig({
   integrations: [
     starlight({
-      title: "Cast Docs",
+      title: "Cast",
+      logo: {
+        src: "/src/assets/wizard-blue.png",
+      },
       social: {
         github: "https://github.com/alp1n3-eth/cast",
       },

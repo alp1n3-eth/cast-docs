@@ -1,11 +1,11 @@
 ---
-title: Welcome to Cast
+title: See the Magic in Action with Cast
 description: Make sending HTTP requests & testing APIs EZPZ.
 template: splash
 hero:
   tagline: Make sending HTTP requests & testing APIs EZPZ.
-  image:
-    file: ../../assets/blue-wizard-large.png
+  #image:
+  #file: ../../assets/wizard-blue.png
   actions:
     - text: Install Cast
       link: /guides/install-cast/
@@ -17,20 +17,82 @@ hero:
 ---
 
 import { Card, CardGrid } from "@astrojs/starlight/components";
+import { Code } from "@astrojs/starlight/components";
 
-## Next steps
+export const exampleCode = `
+# Chain Multiple Requests Together
+[pre]
+env_token = uuidv7()
+secretPhrase = url.encode("th3$quick brown fox jumped$over the$lazy d0g")
+host_header = "Host: example.com"
 
-<CardGrid stagger>
-  <Card title="Update content" icon="pencil">
-    Edit `src/content/docs/index.mdx` to see this page change.
+# Insert Functions and Persistent Values Into Requests
+
+[request]
+POST /entry/new HTTP/1.1
+host_header
+Content-Type: application/json
+
+{
+"entryName": "env_token",
+"secret": "secretPhrase"
+}
+
+# Create Assertions and Capture Values from the Response
+
+[post]
+status == "200"
+header != "X-Rate-Limit"
+jwtReply = regex "(^[A-Za-z0-9-_]_\.[A-Za-z0-9-_]_\.[A-Za-z0-9-_]\*$)"
+
+`;
+export const fileName = "example_request.http";
+export const highlights = ["file", "CMS"];
+
+<Code code={exampleCode} lang="js" title={fileName} mark={highlights} />
+<br></br>
+<br></br>
+<CardGrid>
+  <Card title="Lightning Fast" icon="rocket">
+    Get responses instantly, whether you're sending requests from the CLI or
+    from a file.
   </Card>
-  <Card title="Add new content" icon="add-document">
-    Add Markdown or MDX files to `src/content/docs` to create new pages.
+  <Card title="Use HTTP" icon="seti:html">
+    Requests are easy to build and troubleshoot because they follow the HTTP
+    syntax.
   </Card>
-  <Card title="Configure your site" icon="setting">
-    Edit your `sidebar` and other config in `astro.config.mjs`.
+  <Card title="Chain Requests" icon="puzzle">
+    Automate multi-request workflows using simple script files. Chain requests
+    together with ease.
   </Card>
-  <Card title="Read the docs" icon="open-book">
-    Learn more in [the Starlight Docs](https://starlight.astro.build/).
+  <Card title="Response Superpowers" icon="seti:json">
+    Parse, assert, and capture values from the entirety of the HTTP response.
+    Script complex API workflows.
+  </Card>
+  <Card title="Git Friendly" icon="seti:git">
+    HTTP requests are human-readable and easy to grok. Just commit your script
+    files directly to a repo!
+  </Card>
+  <Card title="Simple CLI" icon="seti:shell">
+    Intuitive command structure that's easy to learn and remember. No more
+    digging through documentation. There's now another reason to never need to
+    leave your terminal.
+  </Card>
+  <Card title="No Lock-In" icon="approve-check">
+    HTTP requests aren't a proprietary format. We've gone ahead and built tools
+    to make it as easy as possible to leave Cast, with export format options
+    such as: HTTP, cURL, and OpenAPI v3.
+  </Card>
+  <Card title="Made with Go" icon="seti:go">
+    Fast & simple with a large community, a better language couldn't have been
+    picked.
   </Card>
 </CardGrid>
+<br></br>
+<br></br>
+
+<footer>
+  <center>
+    <b>Made with 💙 in 🇺🇸</b>
+  </center>
+</footer>

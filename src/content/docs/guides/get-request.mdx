@@ -63,3 +63,50 @@ export const filename = "request.http";
 
   </Steps></TabItem>
 </Tabs>
+
+## Going Further Into Scripting
+
+```http
+# Chain Multiple Requests Together
+[pre]
+env_token = uuidv7()
+secretPhrase = url.encode("th3$quick brown fox jumped$over the$lazy d0g")
+host_header = "Host: example.com"
+
+# Insert Functions and Persistent Values Into Requests
+[request]
+POST /entry/new HTTP/1.1
+host_header
+Content-Type: application/json
+
+{
+  "entryName": "env_token",
+  "secret": "secretPhrase"
+}
+
+# Create Assertions and Capture Values from the Response
+[post]
+status == "200"
+header != "X-Rate-Limit"
+jwtReply = regex "(^[A-Za-z0-9-_]*\.[A-Za-z0-9-_]*\.[A-Za-z0-9-_]*$)"
+```
+
+### Contents of a Script
+
+A script has five main items:
+
+1. Functions
+2. Variables
+3. Requests
+4. Assertions
+5. Captures
+
+**Functions** (`env_token = uuidv7()`) are on the other side of a single equals sign (`=`) and contain the function name and parenthesis (`uuidv7()`), and **do not** have quotes surrounding the function. If any value is passed inside of the function, it requires quotes (`url.encode("th3$quick brown fox jumped$over the$lazy d0g")`).
+
+**Variables** (`env_token`) are globally scoped and store values. Values can be manually assigned, the result of a function, or the result of a capture. They are used to insert the values into the requests, and will match on the occurrence of any word that exactly matches the variable's name, and will swap the name for the variable's value.
+
+**Requests** (`POST /entry/new HTTP/1.1`) are dead simple. They stick as close to a standard HTTP request as possible while still enabling the use of things like variable replacements. A full request will have the method, endpoint, HTTP version, and host. Including a body is optional.
+
+**Assertions** (`status == "200"`) are run after the response has been received and use a double equals sign (`==`). Items such as header values and body content can be checked to ensure they contain (`==`) or do not contain (`!=`) specific values.
+
+**Captures** (`jwtReply = regex "(^[A-Za-z0-9-_]*\.[A-Za-z0-9-_]*\.[A-Za-z0-9-_]*$)"`) are run after the response has been received as well, and will capture a value and store it in the variable if found. The above example contains the regex to capture a JWT.
